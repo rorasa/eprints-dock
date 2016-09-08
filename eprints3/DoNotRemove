@@ -1,0 +1,3 @@
+eprints3 folder stores the archives data (in eprints3/archives) and confis (in eprints/cfg). These folders will be populated once a repository is created. 
+
+To backup the respositories, backup both eprints3 and mysql folders.
