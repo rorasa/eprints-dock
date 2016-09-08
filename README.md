@@ -2,7 +2,7 @@
 
 Environments for running preconfigured EPrints repository in a Docker container.
 
-This environment files are necessary to run rorasa/eprints3 Docker image.
+This environment files are necessary to run [rorasa/eprints3](https://hub.docker.com/r/rorasa/eprints3/) Docker image.
 
 ====
 
