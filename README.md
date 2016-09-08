@@ -10,9 +10,9 @@ Ever want a digital repository in your home?
 
 EPrints-dock allows an institutional-grade repository system [EPrints](http://www.eprints.org) to be deployed instantly as a 
 docker container. EPrints is a full-fledged respository system employed in hundreds on universities and libraries worldwide. 
-With EPrints-dbox, it takes only a few steps to have your own powerful repository up-and-running locally in no time.
+With EPrints-dock, it takes only a few steps to have your own powerful repository up-and-running locally in no time.
 
-EPrints-dbox is designed to work as a local repository where large traffic and security are not concerns. 
+EPrints-dock is designed to work as a local repository where large traffic and security are not concerns. 
 It works best as a local repository, home repository or a demo. 
 For large scale production repository, it is advised to deploy EPrints properly on a server following the instructions 
 at http://wiki.eprints.org/w/Main_Page .
