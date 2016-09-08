@@ -72,3 +72,46 @@ After the first time setup of EPrints-dock and the repository, it is very easy t
 
 Just start up Docker, run start_eprints.sh script, and go to your.domain.name on your browser. That's it!
 
+## Create your repository
+
+If this is the first time you use EPrints-box, then you have to create a new repository.
+
+### 1. Get a fresh EPrints-dock
+
+After all the requires dependencies are installed, please download and extract the latest version of EPrints-dock from https://github.com/rorasa/eprints-dock/releases .
+
+### 2. Start up your repository server
+
+Start your repository server by execute the start_eprints.sh script. After the server is started, you should be at the root of the server. Run this command
+```bash
+su eprints
+```
+to switch to *eprints* admin user. You should now be at `eprints@<containerid>$`.
+
+### 3. Create new repository
+
+The instance of EPrints is installed at `/usr/share/eprints3/`. To create a new repository, use command
+```bash
+/usr/share/eprints3/bin/epadmin create
+```
+then follow the on-screen instructions.
+
+Please take note of the *Host Name*. This is your repository's domain (*your.repository.domain*) the you will use to access your repository. It is also the domain name you use [during the setup of your host](https://github.com/rorasa/eprints-box#5-setting-your-host).
+
+When prompt to create a database, use username `root` and password `root`.
+
+### 5. Finalise your repository
+
+After a new repository is created. Do
+```bash
+exit
+```
+to drop back to root user. 
+
+Then restart the server by
+```bash
+service apache2 restart
+```
+
+Supposed that you already setup your machine's host, you can put your repository's domain into your browser. If everything is working properly you should see an EPrints homepage.
+
