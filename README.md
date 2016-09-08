@@ -66,7 +66,7 @@ echo "127.0.0.1     your.repository.domain | sudo tee -a /etc/hosts
 Open your web browser. Type in `your.repository.domain` (don't forget to change this to your real domain) into the browser URL box. 
 Suppose that the repository is already created and the hosts file is set correctly, the homepage of EPrints should show up. Enjoy!
 
-## Day-to-day use of EPrints-box
+## Day-to-day use of EPrints-dock
 
 After the first time setup of EPrints-dock and the repository, it is very easy to access your repository. 
 
@@ -74,7 +74,7 @@ Just start up Docker, run start_eprints.sh script, and go to your.domain.name on
 
 ## Create your repository
 
-If this is the first time you use EPrints-box, then you have to create a new repository.
+If this is the first time you use EPrints-dock, then you have to create a new repository.
 
 ### 1. Get a fresh EPrints-dock
 
@@ -96,7 +96,7 @@ The instance of EPrints is installed at `/usr/share/eprints3/`. To create a new 
 ```
 then follow the on-screen instructions.
 
-Please take note of the *Host Name*. This is your repository's domain (*your.repository.domain*) the you will use to access your repository. It is also the domain name you use [during the setup of your host](https://github.com/rorasa/eprints-box#5-setting-your-host).
+Please take note of the *Host Name*. This is your repository's domain (*your.repository.domain*) the you will use to access your repository. It is also the domain name you use during the setup of your host.
 
 When prompt to create a database, use username `root` and password `root`.
 
@@ -115,3 +115,81 @@ service apache2 restart
 
 Supposed that you already setup your machine's host, you can put your repository's domain into your browser. If everything is working properly you should see an EPrints homepage.
 
+# Technical details
+
+The following part of this documentation is inteded for developers and is not requires for a day-to-day use of EPrints-dock.
+
+## Structure of EPrints-dock
+
+* start_eprints.sh -- A script to start EPrints server via docker run command.
+* eprints -- A folder that stores all the repository data.
+* mysql -- A folder that stores EPrints's MySQL database.
+
+## Software in the package
+
+The current version of EPrints-dock is shipped with EPrints 3.3, Ubuntu 14.04 LTS, and Apache 2.
+
+## Construction of the image
+
+This section describes the steps to construct the iamge rorasa/eprints3 in details.
+
+### Start base image
+
+On your terminal, run
+```
+docker run --name prototype -p 80:80 -v $PWD/eprints3/archives:/usr/share/eprints3/archives -v $PWD/eprints3/cfg:/usr/share/eprints3/cfg -v $PWD/mysql:/var/lib/mysql -t -i ubuntu:14.04
+```
+
+### Add EPrints APT
+Open APT sources.list
+```
+vi /etc/apt/sources.list
+```
+Add the following lines to the file:
+```
+deb http://deb.eprints.org/3.3/ stable/
+deb-src http://deb.eprints.org/3.3/ source/
+```
+
+### Install LAMP stack and EPrints
+```
+apt-get update && apt-get -y --force-yes install apache2 mysql-server php5 libapache2-php5 eprints 
+```
+
+### Create a bootstrap file
+On the terminal, 
+```
+vi bootstrap.sh
+```
+Add the following lines to bootstrap.sh:
+```
+#!/bin/bash
+
+service apache2 start
+service mysql start
+
+echo "========================================================="
+echo "                 Welcome to EPrints-dock                 "
+echo "========================================================="
+```
+
+### Enable EPrints and exit
+On the terminal, 
+```
+a2ensite eprints
+exit
+```
+
+You should now be back at the host shell.
+
+### Commit a new image
+Commit a new image by
+```
+docker commit --change "CMD bash -C '/bootstrap.sh'; 'bash'" -a "auther name <auther email>" -m "Commit meesage" <container-id> rorasa/eprints3
+```
+
+## References
+
+[EPrints manual](http://wiki.eprints.org/w/EPrints_Manual)
+
+[Docker documentation](https://docs.docker.com/)
